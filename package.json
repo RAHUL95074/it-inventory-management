@@ -1,0 +1,20 @@
+{
+  "name": "it-inventory-management",
+  "version": "1.0.0",
+  "description": "Online IT Inventory Management System using Node.js and MySQL",
+  "main": "server.js",
+  "scripts": {"start": "node server.js", "dev": "node --watch server.js", "create-admin": "node scripts/create-admin.js"},
+  "engines": {"node": ">=20"},
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "express-mysql-session": "^3.4.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "mysql2": "^3.12.0"
+  }
+}

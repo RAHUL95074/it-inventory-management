@@ -1,0 +1,36 @@
+CREATE DATABASE IF NOT EXISTS it_inventory CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE it_inventory;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  mobile VARCHAR(20) DEFAULT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('admin','engineer','user') NOT NULL DEFAULT 'user',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_users_role (role)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS assets (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  asset_tag VARCHAR(60) NOT NULL UNIQUE,
+  asset_type VARCHAR(80) NOT NULL,
+  brand VARCHAR(80) DEFAULT NULL,
+  model VARCHAR(100) DEFAULT NULL,
+  serial_number VARCHAR(120) DEFAULT NULL,
+  location VARCHAR(120) NOT NULL,
+  department VARCHAR(100) DEFAULT NULL,
+  status ENUM('available','assigned','repair','retired') NOT NULL DEFAULT 'available',
+  assigned_to BIGINT UNSIGNED DEFAULT NULL,
+  purchase_date DATE DEFAULT NULL,
+  notes TEXT DEFAULT NULL,
+  created_by BIGINT UNSIGNED DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_assets_assigned_user FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_assets_created_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+  INDEX idx_assets_location (location), INDEX idx_assets_status (status), INDEX idx_assets_assigned (assigned_to)
+) ENGINE=InnoDB;
